@@ -76,7 +76,7 @@ class ActiveFooTest < Test::Unit::TestCase
     end
   end
   
-  def test_array_of_users_includes_default_fxml_includes
+  def test_array_of_users_includes_default_xml_includes
     set_response_to User.find(:all).to_fxml
     assert_xml_select 'users user tasks task'
   end
