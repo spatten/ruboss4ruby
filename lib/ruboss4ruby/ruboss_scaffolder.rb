@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 def ruboss_scaffold(name, &block)
   RubossScaffolder.new(name, &block)  
 end
