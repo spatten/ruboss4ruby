@@ -1,6 +1,7 @@
 require 'test/unit'
 require File.join(File.dirname(__FILE__), '..', 'lib', 'ruboss4ruby', 'ruboss_scaffolder')
 
+# Mock out run so we don't actually generate anything.
 class RubossScaffolder
   
   def run
@@ -10,10 +11,6 @@ class RubossScaffolder
 end
 
 class RubossScaffolderTest < Test::Unit::TestCase
-  
-  def setup
-    
-  end
   
   def test_scaffold_with_single_string_attribute
     
