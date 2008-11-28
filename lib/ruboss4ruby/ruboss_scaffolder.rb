@@ -51,9 +51,6 @@ class RubossScaffold
       end
     END
   end
-  # def skip_timestamps
-  #   @skip_timestamps = true
-  # end
   
   def to_s
     [name,flags,attributes_string,references_string].compact.join(" ")
@@ -62,8 +59,6 @@ class RubossScaffold
   def attributes_string
     @attributes.join(" ")
   end
-  
-  
   
   def references_string
     ret = []
