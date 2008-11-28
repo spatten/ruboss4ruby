@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
 def ruboss_scaffold(name, &block)
-  RubossScaffold.new(name, &block)  
+  RubossScaffolder.new(name, &block)  
 end
 
-class RubossScaffold
+class RubossScaffolder
   attr_reader :name
   
   ATTRIBUTE_TYPES = %w(string text boolean integer float date datetime)
@@ -17,6 +17,7 @@ class RubossScaffold
     @has_ones = []
     @attributes = []
     yield self
+    run
   end
   
   ATTRIBUTE_TYPES.each do |attribute_type|

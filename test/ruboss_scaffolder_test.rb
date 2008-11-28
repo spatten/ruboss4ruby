@@ -1,6 +1,14 @@
 require 'test/unit'
 require File.join(File.dirname(__FILE__), '..', 'lib', 'ruboss4ruby', 'ruboss_scaffolder')
 
+class RubossScaffolder
+  
+  def run
+    
+  end
+  
+end
+
 class RubossScaffolderTest < Test::Unit::TestCase
   
   def setup
