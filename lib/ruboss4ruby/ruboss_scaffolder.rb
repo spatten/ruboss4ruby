@@ -7,6 +7,9 @@ end
 class RubossScaffold
   attr_reader :name
   
+  ATTRIBUTE_TYPES = %w(string text boolean integer float date datetime)
+  FLAGS = %w(skip-timestamps skip-migration flex-only)
+  
   def initialize(name, &block)
     @name = name
     @has_manies = []
@@ -16,7 +19,7 @@ class RubossScaffold
     yield self
   end
   
-  %w(string text boolean integer float date datetime).each do |attribute_type|
+  ATTRIBUTE_TYPES.each do |attribute_type|
     module_eval <<-END
       def #{attribute_type}(*args)
         args.each do |arg|
@@ -38,11 +41,19 @@ class RubossScaffold
     @has_ones += args    
   end
   
-  # TODO: ruboss_scaffold_generator currenly barfs on the --skip-timestamps option.
-  #       It should pass it along to scaffold_generator.
-  def skip_timestamps
-    @skip_timestamps = true
+  # TODO: ruboss_scaffold_generator currenly barfs on the --skip-timestamps and --skip-migration options.
+  #       It should pass them along to scaffold_generator.
+  FLAGS.each do |flag|
+    underscored_flag = flag.gsub('-', '_')
+    module_eval <<-END
+      def #{underscored_flag}
+        @#{underscored_flag} = true
+      end
+    END
   end
+  # def skip_timestamps
+  #   @skip_timestamps = true
+  # end
   
   def to_s
     [name,flags,attributes_string,references_string].compact.join(" ")
@@ -63,7 +74,12 @@ class RubossScaffold
   end
   
   def flags
-    "--skip-timestamps" if @skip_timestamps
+    ret = []
+    FLAGS.each do |flag|
+      underscored_flag = flag.gsub('-', '_')
+      ret.push("--#{flag}") if instance_variable_get(underscored_flag)
+    end
+    ret.join(" ") unless ret.empty?
   end
   
   def run
