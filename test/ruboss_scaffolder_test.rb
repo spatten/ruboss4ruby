@@ -49,13 +49,26 @@ class RubossScaffolderTest < Test::Unit::TestCase
   end
   
   # note: ruboss_scaffold_generate barfs on --skip-timestamps
-  def test_skip_timestamps_gets_passes_along
+  def test_skip_timestamps_gets_passed_along
     scaffolder = ruboss_scaffold('users') do |s|
       s.string :first_name
       s.skip_timestamps
     end
     
     assert_match '--skip-timestamps', scaffolder.to_s
+  end
+  
+  def test_multiple_flags_get_passed
+    scaffolder = ruboss_scaffold('users') do |s|
+      s.string :first_name
+      s.skip_timestamps
+      s.flex_only
+      s.skip_migration
+    end
+    
+    assert_match '--skip-timestamps', scaffolder.to_s
+    assert_match '--skip-migration', scaffolder.to_s
+    assert_match '--flex-only', scaffolder.to_s
   end
   
   def test_single_has_many_works
