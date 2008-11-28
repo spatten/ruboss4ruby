@@ -77,7 +77,7 @@ class RubossScaffold
     ret = []
     FLAGS.each do |flag|
       underscored_flag = flag.gsub('-', '_')
-      ret.push("--#{flag}") if instance_variable_get(underscored_flag)
+      ret.push("--#{flag}") if instance_variable_get("@" + underscored_flag)
     end
     ret.join(" ") unless ret.empty?
   end
