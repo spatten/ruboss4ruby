@@ -45,7 +45,7 @@ class RubossScaffold
   end
   
   def to_s
-    [name,options,attributes_string,references_string].compact.join(" ")
+    [name,flags,attributes_string,references_string].compact.join(" ")
   end
   
   def attributes_string
@@ -62,7 +62,7 @@ class RubossScaffold
     ret.join(" ") unless ret.empty?
   end
   
-  def options
+  def flags
     "--skip-timestamps" if @skip_timestamps
   end
   
