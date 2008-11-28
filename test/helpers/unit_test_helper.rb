@@ -17,7 +17,7 @@ class Test::Unit::TestCase #:nodoc:
     self.use_transactional_fixtures = true
   
     # Instantiated fixtures are slow, but give you @david where you otherwise would need people(:david)
-    self.use_instantiated_fixtures  = true
+    self.use_instantiated_fixtures  = false
 
     # Add more helper methods to be used by all tests here...
 end
