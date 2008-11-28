@@ -13,16 +13,22 @@ class RubossScaffold
     yield self
   end
   
-  def string(name)
-    @attributes.push("#{name}:string")
+  %w(string text boolean integer float date datetime).each do |attribute_type|
+    module_eval <<-END
+      def #{attribute_type}(*args)
+        args.each do |arg|
+          @attributes.push(arg.to_s + ":#{attribute_type}")
+        end
+      end
+    END
   end
   
   def to_s
     "#{@name} #{@attributes.join(" ")}"
   end
   
-  def line
-    
+  def run
+    `script/generate ruboss_scaffold #{self}`
   end
   
 end
