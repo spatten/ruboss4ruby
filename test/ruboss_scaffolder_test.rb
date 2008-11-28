@@ -42,7 +42,8 @@ class RubossScaffolderTest < Test::Unit::TestCase
       s.boolean :active
     end
     
-    assert_equal 'users first_name:string last_name:string balance:float num_friends:integer join_date:date last_activity:datetime active:boolean',
+    assert_equal 'users first_name:string last_name:string balance:float num_friends:integer ' + 
+                 'join_date:date last_activity:datetime active:boolean',
                  scaffolder.to_s
 
   end
