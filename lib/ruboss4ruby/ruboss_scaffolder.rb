@@ -3,20 +3,20 @@
 #
 # require 'ruboss_scaffolder'
 # 
-# ruboss_scaffold('users') do |s|
+# ruboss_scaffold('user') do |s|
 #   s.string :first_name
 #   s.string :last_name
 #   s.has_many :projects
 # end
 # 
-# ruboss_scaffold('projects') do |s|
+# ruboss_scaffold('project') do |s|
 #   s.string :name
 #   s.date :start_date, :completion_date
 #   s.has_many :tasks
 #   s.belongs_to :user
 # end
 # 
-# ruboss_scaffold('tasks') do |s|
+# ruboss_scaffold('task') do |s|
 #   s.string :name
 #   s.boolean :completed
 #   s.belongs_to :project
@@ -25,7 +25,7 @@
 # Note that:
 #    You can have multiple entries per line
 #    You can use belongs_to, has_one and has_many
-#    You should use the plural for the scaffold name.
+#    You should use the singular for the scaffold name ('task', not 'tasks').
 
 
 def ruboss_scaffold(name, &block)
