@@ -100,6 +100,9 @@ class RubossConfigGenerator < Rails::Generator::Base
         m.file 'expressInstall.swf', 'public/expressInstall.swf'
         m.template 'index.html.erb', 'public/index.html'
         
+        m.directory 'config/scaffolder'
+        m.file 'sample_ruboss_scaffolder.rb', 'config/scaffolder/sample_ruboss_scaffolder.rb'
+        
         m.dependency 'ruboss_controller', @args
       end
       m.template 'project-textmate.erb', "#{project_name.underscore}.tmproj"
