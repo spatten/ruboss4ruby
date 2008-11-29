@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{ruboss4ruby}
-  s.version = "1.0.9"
+  s.version = "1.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dima Berastau"]
