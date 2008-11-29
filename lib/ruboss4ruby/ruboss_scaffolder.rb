@@ -26,6 +26,10 @@
 #    You can have multiple entries per line
 #    You can use belongs_to, has_one and has_many
 #    You should use the singular for the scaffold name ('task', not 'tasks').
+#
+# Scaffold files should be placed in config/scaffolder.  You  will see a file called 'sample_ruboss_scaffolder.rb' there.
+# To run the scaffold, just run it as a regular Ruby file:
+# ruby config/scaffolder/some_scaffold_file.rb
 
 
 def ruboss_scaffold(name, &block)
@@ -107,7 +111,10 @@ class RubossScaffolder
   end
   
   def run
+    puts "running: ruboss_scaffold #{self}"
     `script/generate ruboss_scaffold #{self}`
+    puts 'done ...'
+    sleep 1
   end
   
 end
