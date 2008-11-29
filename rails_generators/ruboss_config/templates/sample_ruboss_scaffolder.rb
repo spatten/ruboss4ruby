@@ -1,4 +1,5 @@
-require 'ruboss_scaffolder'
+require 'rubygems'
+require 'ruboss4ruby/ruboss_scaffolder'
 
 ruboss_scaffold('users') do |s|
   s.string :first_name
