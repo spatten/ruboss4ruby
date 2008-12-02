@@ -1,5 +1,11 @@
+$:.unshift(File.dirname(__FILE__))
+
 require 'test/unit'
+require 'helpers/test_helper'
+require 'helpers/unit_test_helper'
+require 'helpers/functional_test_helper'
 require 'rubygems'
+require 'action_view'
 require File.join(File.dirname(__FILE__), 'helpers', 'test_helper.rb')
 
 class MockSession
@@ -18,7 +24,7 @@ class RubossHelperTest < Test::Unit::TestCase
   include ActionView::Helpers
   include ActionView::Helpers::UrlHelper
   include ActionView::Helpers::ActiveRecordHelper
-  include ActionView::Helpers::JavascriptHelper
+  # include ActionView::Helpers::JavascriptHelper
   include ActionView::Helpers::AssetTagHelper
   include ActionView::Helpers::TagHelper  
   include ActionView::Helpers::CaptureHelper
@@ -33,6 +39,24 @@ class RubossHelperTest < Test::Unit::TestCase
   def form_authenticity_token
     "123456"
   end
+
+  # From action_pack/lib/action_view/helpers/asset_tag_helper.rb
+  # Use the RAILS_ASSET_ID environment variable or the source's
+  # modification time as its cache-busting asset id.
+  def rails_asset_id(source)
+    if asset_id = ENV["RAILS_ASSET_ID"]
+      asset_id
+    else
+      path = File.join(ASSETS_DIR, source)
+
+      if File.exist?(path)
+        File.mtime(path).to_i.to_s
+      else
+        ''
+      end
+    end
+  end
+
     
   def test_sanity
     assert_nothing_raised {swfobject('test.swf')}
