@@ -1,5 +1,6 @@
 $:.unshift(File.dirname(__FILE__))
 
+require 'helpers/test_helper'
 require 'helpers/unit_test_helper'
 require 'models/location'
 require 'models/note'
@@ -33,10 +34,14 @@ class ToFxmlTest < Test::Unit::TestCase
     assert_xml_select 'user has_nothing_to_do'
   end
 
-  
   def test_default_xml_methods_on_task_are_included_in_fxml
-    set_response_to tasks(:learn_piano).to_fxml
+    set_response_to tasks(:haydn).to_fxml
     assert_xml_select 'task is_active'
+  end
+  
+  def test_default_xml_methods_are_ignored_if_you_use_ignore_default_methods
+    set_response_to tasks(:haydn).to_fxml(:ignore_default_methods => true)
+    assert_xml_select 'task is_active', 0    
   end
   
   def test_default_xml_methods_exists
@@ -55,6 +60,11 @@ class ToFxmlTest < Test::Unit::TestCase
     assert_xml_select 'tasks task is_active'
   end
   
+  def test_default_xml_methods_get_ignored_on_dependencies_if_you_use_ignore_default_methods
+    set_response_to users(:ludwig).to_fxml(:include => :tasks, :ignore_default_methods => true)
+    assert_xml_select 'tasks task is_active', 0
+  end  
+  
   def test_model_without_default_xml_methods_still_works
     assert_nothing_raised{ locations(:vienna).to_fxml }
   end
@@ -68,6 +78,11 @@ class ToFxmlTest < Test::Unit::TestCase
   def test_model_with_default_xml_includes
     set_response_to users(:ludwig).to_fxml
     assert_xml_select 'user tasks task'
+  end
+  
+  def test_default_xml_includes_are_ignore_if_you_use_ignore_default_xml_includes
+    set_response_to users(:ludwig).to_fxml(:ignore_default_include => true)
+    assert_xml_select 'user tasks task', 0
   end
   
   # Test type=.... stuff for has_many, booleans, integers, dates, date-times

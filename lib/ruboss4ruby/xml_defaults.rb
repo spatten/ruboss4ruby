@@ -21,16 +21,18 @@ module ActiveRecord
         END
       end
             
-      def default_xml_hash(already_included = [])
+      def default_xml_hash(already_included = [], ignore_default_methods = nil)
         # return {} unless self.class.respond_to?(:default_xml_include_params) || self.class.respond_to?(:default_xml_methods_array)
         default_hash = {:include => {}}
-        default_hash[:methods] = self.default_xml_methods_array if self.respond_to?(:default_xml_methods_array)
+        unless ignore_default_methods
+          default_hash[:methods] = self.default_xml_methods_array if self.respond_to?(:default_xml_methods_array)
+        end
         if self.respond_to?(:default_xml_include_params)
           default_includes = self.default_xml_include_params
           default_hash[:include] = default_includes.inject({}) do |include_hash, included|
             next if already_included.include?(included) # We only want to include things once, to avoid infinite loops
             included_class = included.to_s.singularize.camelize.constantize
-            include_hash[included] = included_class.default_xml_hash(already_included + default_includes) 
+            include_hash[included] = included_class.default_xml_hash(already_included + default_includes, ignore_default_methods) 
             include_hash
           end
         end
@@ -64,8 +66,14 @@ module ActiveRecord
     alias_method :xml_defaults_old_to_xml, :to_xml unless method_defined?(:xml_defaults_old_to_xml)
     
     def to_xml(options = {}, &block)
-      options[:methods] = [options[:methods] || []].flatten + (self.class.default_xml_hash[:methods] || [])
-      options[:include] = self.class.default_xml_hash[:include].merge(self.class.includes_as_hash(options[:include]))
+      unless options[:ignore_defaults]
+        unless options[:ignore_default_methods]
+          options[:methods] = [options[:methods] || []].flatten + (self.class.default_xml_hash[:methods] || [])
+        end
+        unless options[:ignore_default_include]
+          options[:include] = self.class.default_xml_hash([], options[:ignore_default_methods])[:include].merge(self.class.includes_as_hash(options[:include]))
+        end
+      end
       xml_defaults_old_to_xml(options, &block)
     end      
     
